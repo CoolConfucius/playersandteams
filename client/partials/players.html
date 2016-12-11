@@ -1,0 +1,19 @@
+<div ng-controller = "playersController">      
+  <button ng-click="log()">Log Players</button><br>
+  Name: <input type="text" ng-model="newplayer.name"><br>
+  <button ng-click="addplayer()">Add Player</button>
+  <table>
+    <thead>
+      <th>#</th>
+      <th>Name</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="player in players track by $index">
+        <td>{{$index}}</td>
+        <td>{{player.name}}</td>
+        <td><button ng-click="removeplayer($index)">Remove Player</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

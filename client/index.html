@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app='myApp'> 
+  <head>
+    <title></title>
+    <script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+<script>
+    var myApp = angular.module('myApp', ['ngRoute']);
+    myApp.config(function ($routeProvider) {
+      $routeProvider
+        // .when('/',{
+        //     templateUrl: 'partials/view1.html',
+        // })
+        .when('/players',{
+            templateUrl: 'partials/players.html'
+        })
+        // .when('/teams',{
+        //     templateUrl: 'partials/teams.html'
+        // })
+        .otherwise({
+          redirectTo: '/'
+        });
+    });
+
+    myApp.factory('playerFactory', function(){
+      var players = [
+        {name: 'Afirstname'},
+        {name: 'Bfirstname'},
+        {name: 'Cfirstname'}];
+      var factory = {};
+      factory.getPlayers = function(callback){
+        callback(players.slice(0));
+      }
+      factory.addPlayer = function(newplayer, callback){
+        players.push(newplayer);
+        callback();
+      }
+
+      factory.removePlayer = function(index, callback){
+        players.splice(index, 1);
+        callback();
+      }
+
+
+      factory.log = function(cb){
+        console.log("Factory: ", players);
+        cb(); 
+      }
+
+      return factory; 
+    })
+
+     
+
+    myApp.controller('playersController', ['$scope', '$location', 'playerFactory', function ($scope, $location, playerFactory) {
+      console.log("$location: ", $location);
+      $scope.players = []; 
+      $scope.newplayer = {
+        name: ''
+      };
+      playerFactory.getPlayers(function(data){
+        $scope.players = data; 
+      }); 
+      
+      $scope.addplayer = function(){
+        playerFactory.addPlayer($scope.newplayer, function(){
+          $scope.players.push($scope.newplayer);
+          // $location.url('/teams');
+        })
+      }
+
+      $scope.removeplayer = function(index){
+        playerFactory.removePlayer(index, function(){
+          $scope.players.splice(index, 1);
+        })
+      }
+
+      $scope.log = function(){
+        playerFactory.log(function(){
+          console.log("controller");
+        })
+      }
+    }]);
+    myApp.controller('listController', ['$scope', 'playerFactory', function ($scope, playerFactory) {
+      $scope.players = [];       
+      playerFactory.getPlayers(function(data){
+        $scope.players = data; 
+      }); 
+    }]);
+    </script>
+  </head>
+  <body>
+    <div ng-app='myApp'>
+        <a href="#!/players">Players</a> | <a href="#!/teams">Teams</a> | <a href="#!/associations">Associations</a>
+        <div ng-view="">
+        </div>
+    </div>
+  </body>
+</html>
