@@ -1,0 +1,19 @@
+<div ng-controller = "teamsController">      
+  <button ng-click="log()">Log Teams</button><br>
+  Name: <input type="text" ng-model="newteam.name"><br>
+  <button ng-click="addteam()">Add New Team</button>
+  <table>
+    <thead>
+      <th>#</th>
+      <th>Team Name</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="team in teams track by $index">
+        <td>{{$index}}</td>
+        <td>{{team.name}}</td>
+        <td><button ng-click="removeteam($index)">Remove Team</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -8,15 +8,12 @@
     var myApp = angular.module('myApp', ['ngRoute']);
     myApp.config(function ($routeProvider) {
       $routeProvider
-        // .when('/',{
-        //     templateUrl: 'partials/view1.html',
-        // })
         .when('/players',{
             templateUrl: 'partials/players.html'
         })
-        // .when('/teams',{
-        //     templateUrl: 'partials/teams.html'
-        // })
+        .when('/teams',{
+            templateUrl: 'partials/teams.html'
+        })
         .otherwise({
           redirectTo: '/'
         });
@@ -24,9 +21,9 @@
 
     myApp.factory('playerFactory', function(){
       var players = [
-        {name: 'Afirstname'},
-        {name: 'Bfirstname'},
-        {name: 'Cfirstname'}];
+        {name: 'Aname'},
+        {name: 'Bname'},
+        {name: 'Cname'}];
       var factory = {};
       factory.getPlayers = function(callback){
         callback(players.slice(0));
@@ -44,6 +41,34 @@
 
       factory.log = function(cb){
         console.log("Factory: ", players);
+        cb(); 
+      }
+
+      return factory; 
+    })
+
+    myApp.factory('teamFactory', function(){
+      var teams = [
+        {name: 'Ateam'},
+        {name: 'Bteam'},
+        {name: 'Cteam'}];
+      var factory = {};
+      factory.getTeams = function(callback){
+        callback(teams.slice(0));
+      }
+      factory.addTeam = function(newteam, callback){
+        teams.push(newteam);
+        callback();
+      }
+
+      factory.removeTeam = function(index, callback){
+        teams.splice(index, 1);
+        callback();
+      }
+
+
+      factory.log = function(cb){
+        console.log("Factory: ", teams);
         cb(); 
       }
 
@@ -81,6 +106,40 @@
         })
       }
     }]);
+
+
+    myApp.controller('teamsController', ['$scope', '$location', 'teamFactory', function ($scope, $location, teamFactory) {
+      console.log("$location: ", $location);
+      $scope.teams = []; 
+      $scope.newteam = {
+        name: ''
+      };
+      teamFactory.getTeams(function(data){
+        $scope.teams = data; 
+      }); 
+      
+      $scope.addteam = function(){
+        teamFactory.addTeam($scope.newteam, function(){
+          $scope.teams.push($scope.newteam);
+          // $location.url('/teams');
+        })
+      }
+
+      $scope.removeteam = function(index){
+        teamFactory.removeTeam(index, function(){
+          $scope.teams.splice(index, 1);
+        })
+      }
+
+      $scope.log = function(){
+        teamFactory.log(function(){
+          console.log("controller");
+        })
+      }
+    }]);
+
+
+
     myApp.controller('listController', ['$scope', 'playerFactory', function ($scope, playerFactory) {
       $scope.players = [];       
       playerFactory.getPlayers(function(data){
