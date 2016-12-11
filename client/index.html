@@ -140,7 +140,7 @@
 
 
 
-    myApp.controller('listController', ['$scope', 'playerFactory', function ($scope, playerFactory) {
+    myApp.controller('associationsController', ['$scope', 'playerFactory', 'teamFactory', function ($scope, playerFactory, teamFactory) {
       $scope.players = [];       
       playerFactory.getPlayers(function(data){
         $scope.players = data; 
