@@ -14,6 +14,9 @@
         .when('/teams',{
             templateUrl: 'partials/teams.html'
         })
+        .when('/associations',{
+            templateUrl: 'partials/associations.html'
+        })
         .otherwise({
           redirectTo: '/'
         });
@@ -142,8 +145,12 @@
 
     myApp.controller('associationsController', ['$scope', 'playerFactory', 'teamFactory', function ($scope, playerFactory, teamFactory) {
       $scope.players = [];       
+      $scope.teams = [];       
       playerFactory.getPlayers(function(data){
         $scope.players = data; 
+      }); 
+      teamFactory.getTeams(function(data){
+        $scope.teams = data; 
       }); 
     }]);
     </script>
