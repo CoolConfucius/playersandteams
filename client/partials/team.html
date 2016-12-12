@@ -1,0 +1,16 @@
+<div ng-controller = "teamController">      
+  <h1>Team</h1>
+  <h1>{{teamname}}</h1>
+  <table>
+    <thead>
+      <th>#</th>
+      <th>Player Name</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="player in team.players track by $index">
+        <td>{{$index}}</td>
+        <td>{{player}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

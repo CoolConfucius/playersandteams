@@ -11,7 +11,8 @@
     <tbody>
       <tr ng-repeat="team in teams track by $index">
         <td>{{$index}}</td>
-        <td>{{team.name}}</td>
+        <!-- <td>{{team.name}}</td> -->
+        <td><a href="#!/teams/{{team.name}}" ng-bind='team.name'></a></td>
         <td><button ng-click="removeteam($index)">Remove Team</button></td>
       </tr>
     </tbody>

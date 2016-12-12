@@ -5,8 +5,8 @@
     <option ng-repeat="player in players track by $index" value="{{$index}}">{{player.name}}</option>
   </select>
   Team:
-  <select name="assignteam" id="" ng-model="assignment.team">
-    <option ng-repeat="team in teams track by $index" value="{{team.name}}">{{team.name}}</option>
+  <select name="assignteam" id="" ng-model="assignment.teamindex">
+    <option ng-repeat="team in teams track by $index" value="{{$index}}">{{team.name}}</option>
   </select>
   <button ng-click="assign()">Assign Player to Team</button>
   <table>
@@ -20,7 +20,7 @@
       <tr ng-repeat="player in players track by $index">
         <td>{{$index}}</td>
         <td>{{player.name}}</td>
-        <td>{{player.team}}</td>
+        <td>{{player.teamname}}</td>
         <td><button ng-click="clearassignment($index)">Clear Assignment</button></td>
       </tr>
     </tbody>

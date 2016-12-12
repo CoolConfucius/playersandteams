@@ -9,13 +9,16 @@
     myApp.config(function ($routeProvider) {
       $routeProvider
         .when('/players',{
-            templateUrl: 'partials/players.html'
+          templateUrl: 'partials/players.html'
         })
         .when('/teams',{
-            templateUrl: 'partials/teams.html'
+          templateUrl: 'partials/teams.html'
         })
+        .when('/teams/:teamname',{
+          templateUrl: 'partials/team.html'
+         })
         .when('/associations',{
-            templateUrl: 'partials/associations.html'
+          templateUrl: 'partials/associations.html'
         })
         .otherwise({
           redirectTo: '/'
@@ -24,12 +27,13 @@
 
     myApp.factory('playerFactory', function(){
       var players = [
-        {name: 'Aname'},
-        {name: 'Bname'},
-        {name: 'Cname'}];
+        {name: 'Aname', teamname: ''},
+        {name: 'Bname', teamname: ''},
+        {name: 'Cname', teamname: ''}];
       var factory = {};
       factory.getPlayers = function(callback){
-        callback(players.slice(0));
+        // callback(players.slice(0));
+        callback(players);
       }
       factory.addPlayer = function(newplayer, callback){
         players.push(newplayer);
@@ -41,13 +45,13 @@
         callback();
       }
 
-      factory.assignTeam = function(index, team, callback){
-        players[index].team = team;
+      factory.assignTeam = function(index, teamname, callback){
+        players[index].teamname = teamname;
         callback();
       }
 
       factory.clearAssignment = function(index, callback){
-        players[index].team = '';
+        players[index].teamname = '';
         callback();
       }
 
@@ -62,20 +66,40 @@
 
     myApp.factory('teamFactory', function(){
       var teams = [
-        {name: 'Ateam'},
-        {name: 'Bteam'},
-        {name: 'Cteam'}];
+        {name: 'Ateam', players: []},
+        {name: 'Bteam', players: []},
+        {name: 'Cteam', players: []}];
       var factory = {};
+      
       factory.getTeams = function(callback){
-        callback(teams.slice(0));
+        // callback(teams.slice(0));
+        callback(teams);
       }
+
+      factory.getTeamPlayers = function(name, callback){
+        var players;
+        teams.forEach(function(team){
+          if(team.name === name){
+            // callback(team.players.slice(0));
+            callback(team.players);
+          }
+        })
+        // callback(teams.slice(0));
+      }
+
       factory.addTeam = function(newteam, callback){
+        newteam.players = []; 
         teams.push(newteam);
         callback();
       }
 
       factory.removeTeam = function(index, callback){
         teams.splice(index, 1);
+        callback();
+      }
+
+      factory.addPlayer = function(index, playername, callback){
+        teams[index].players.push(playername);
         callback();
       }
 
@@ -163,13 +187,21 @@
       }); 
       teamFactory.getTeams(function(data){
         $scope.teams = data; 
-        $scope.assignment.team = data[0].name; 
+        $scope.assignment.teamindex = 0; 
+        // $scope.assignment.team = data[0].name; 
       }); 
 
       $scope.assign = function(){
-        console.log("assign! ", $scope.assignment.playerindex, $scope.assignment.team);
-        playerFactory.assignTeam($scope.assignment.playerindex, $scope.assignment.team, function(data){
-          $scope.players[$scope.assignment.playerindex].team = $scope.assignment.team;
+        console.log("assign! ", $scope.assignment.playerindex, $scope.assignment.teamindex);
+        var playerindex = $scope.assignment.playerindex;
+        var teamindex = $scope.assignment.teamindex;
+        var playername = $scope.players[playerindex].name;
+        var teamname = $scope.teams[teamindex].name;
+        console.log("!!!!!!", playerindex, teamindex, playername, teamname);
+        playerFactory.assignTeam(playerindex, teamname, function(data){
+          teamFactory.addPlayer(teamindex, playername, function(data){
+            $scope.players[playerindex].team = teamname; 
+          })
         })
       }
 
@@ -180,6 +212,17 @@
         });
       }
     }]);
+
+    myApp.controller('teamController', function(teamFactory, $scope, $routeParams){
+      console.log($routeParams);
+      $scope.teamname = $routeParams.teamname; 
+      $scope.players = []; 
+
+      teamFactory.getTeamPlayers(function(data){
+        $scope.players = data; 
+      }); 
+
+    })
     </script>
   </head>
   <body>
