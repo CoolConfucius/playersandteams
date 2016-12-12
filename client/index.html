@@ -41,6 +41,16 @@
         callback();
       }
 
+      factory.assignTeam = function(index, team, callback){
+        players[index].team = team;
+        callback();
+      }
+
+      factory.clearAssignment = function(index, callback){
+        players[index].team = '';
+        callback();
+      }
+
 
       factory.log = function(cb){
         console.log("Factory: ", players);
@@ -146,12 +156,22 @@
     myApp.controller('associationsController', ['$scope', 'playerFactory', 'teamFactory', function ($scope, playerFactory, teamFactory) {
       $scope.players = [];       
       $scope.teams = [];       
+      $scope.assignment = {};
       playerFactory.getPlayers(function(data){
         $scope.players = data; 
+        $scope.assignment.playerindex = 0; 
       }); 
       teamFactory.getTeams(function(data){
         $scope.teams = data; 
+        $scope.assignment.team = data[0].name; 
       }); 
+
+      $scope.assign = function(){
+        console.log("assign! ", $scope.assignment.playerindex, $scope.assignment.team);
+        playerFactory.assignTeam($scope.assignment.playerindex, $scope.assignment.team, function(data){
+          $scope.players[$scope.assignment.playerindex].team = $scope.assignment.team;
+        })
+      }
     }]);
     </script>
   </head>
