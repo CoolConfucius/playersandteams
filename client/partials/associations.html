@@ -9,7 +9,7 @@
     <option ng-repeat="team in teams track by $index" value="{{$index}}">{{team.name}}</option>
   </select>
   <button ng-click="assign()">Assign Player to Team</button>
-  <table>
+  <table ng-show="players.length > 0">
     <thead>
       <th>#</th>
       <th>Name</th>

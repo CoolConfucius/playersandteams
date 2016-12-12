@@ -2,7 +2,7 @@
   <button ng-click="log()">Log Teams</button><br>
   Name: <input type="text" ng-model="newteam.name"><br>
   <button ng-click="addteam()">Add New Team</button>
-  <table>
+  <table ng-show="teams.length > 0">
     <thead>
       <th>#</th>
       <th>Team Name</th>

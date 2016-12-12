@@ -32,8 +32,8 @@
         {name: 'Cname', teamname: ''}];
       var factory = {};
       factory.getPlayers = function(callback){
-        // callback(players.slice(0));
-        callback(players);
+        callback(players.slice(0));
+        // callback(players);
       }
       factory.addPlayer = function(newplayer, callback){
         players.push(newplayer);
@@ -72,8 +72,8 @@
       var factory = {};
       
       factory.getTeams = function(callback){
-        // callback(teams.slice(0));
-        callback(teams);
+        callback(teams.slice(0));
+        // callback(teams);
       }
 
       factory.getTeamPlayers = function(name, callback){
@@ -83,8 +83,8 @@
           console.log(team);
           if(team.name === name){
             console.log("found it!");
-            // callback(team.players.slice(0));
-            callback(team.players);
+            callback(team.players.slice(0));
+            // callback(team.players);
           }
         })
         // callback(teams.slice(0));
@@ -97,6 +97,7 @@
       }
 
       factory.removeTeam = function(index, callback){
+        console.log(index);
         teams.splice(index, 1);
         callback();
       }
@@ -167,7 +168,9 @@
 
       $scope.removeteam = function(index){
         teamFactory.removeTeam(index, function(){
-          $scope.teams.splice(index, 1);
+          console.log(index);
+          $scope.teams.splice(index, 1); 
+          // ^ deletes two teams with this line when no slice0. 
         })
       }
 

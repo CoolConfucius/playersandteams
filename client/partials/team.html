@@ -1,7 +1,7 @@
 <div ng-controller = "teamController">      
   <h1>Team</h1>
   <h1>{{teamname}}</h1>
-  <table>
+  <table ng-show="players.length > 0">
     <thead>
       <th>#</th>
       <th>Player Name</th>
