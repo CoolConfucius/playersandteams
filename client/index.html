@@ -77,9 +77,12 @@
       }
 
       factory.getTeamPlayers = function(name, callback){
-        var players;
+        // var players;
+        console.log("getTeamPlayers");
         teams.forEach(function(team){
+          console.log(team);
           if(team.name === name){
+            console.log("found it!");
             // callback(team.players.slice(0));
             callback(team.players);
           }
@@ -218,7 +221,7 @@
       $scope.teamname = $routeParams.teamname; 
       $scope.players = []; 
 
-      teamFactory.getTeamPlayers(function(data){
+      teamFactory.getTeamPlayers($scope.teamname, function(data){
         $scope.players = data; 
       }); 
 
