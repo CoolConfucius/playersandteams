@@ -172,6 +172,13 @@
           $scope.players[$scope.assignment.playerindex].team = $scope.assignment.team;
         })
       }
+
+      $scope.clearassignment = function(index){
+        console.log("clearassignment! ", index);
+        playerFactory.clearAssignment(index, function(data){
+          $scope.players[index].team = '';
+        });
+      }
     }]);
     </script>
   </head>
